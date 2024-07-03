@@ -2,7 +2,7 @@ import React from "react";
 
 function Features() {
   return (
-    <section className=" flex flex-col items-center pt-20 gap-20">
+    <section className=" font-Montserrat flex flex-col items-center pt-20 gap-20">
       <h2 className=" text-[2.3rem] font-semibold">Why Use QueryHub?</h2>
       <div className=" grid grid-cols-4 gap-10 ">
         <div className=" w-[320px] h-[400px] ">

@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      Montserrat: ["Montserrat"]
+      Montserrat: ["Montserrat"],
     },
     extend: {
       backgroundImage: {
@@ -17,5 +17,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

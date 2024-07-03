@@ -1,14 +1,15 @@
+import Image from "next/image";
 import React from "react";
-
+import qr_code from "@/public/QR_Code.webp";
 function Works() {
   return (
-    <section className=" flex flex-col items-center gap-20 px-10 pb-20">
+    <section className=" font-Montserrat flex flex-col items-center gap-20 px-10 pb-20">
       <h2 className=" text-[2.3rem] font-semibold">How It Works</h2>
       <div className=" grid grid-cols-3">
         <div className=" w-[500px] flex flex-col items-center gap-2">
           <svg
             aria-hidden="true"
-            class="e-font-icon-svg e-far-dot-circle"
+            className="e-font-icon-svg e-far-dot-circle"
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -17,13 +18,15 @@ function Works() {
           </svg>
           <h3 className=" text-center font-bold">Scan the QR Code</h3>
           <p>
-            Use your phone's camera to scan the code displayed at the seminar.
+            Use your phone&apos;s camera to scan the code displayed at the
+            seminar.
           </p>
+          <Image src={qr_code} alt="qrcode" />
         </div>
         <div className=" w-[500px] flex flex-col items-center gap-2">
           <svg
             aria-hidden="true"
-            class="e-font-icon-svg e-far-dot-circle"
+            className="e-font-icon-svg e-far-dot-circle"
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -32,11 +35,31 @@ function Works() {
           </svg>
           <h3 className=" text-center font-bold">Submit Your Question</h3>
           <p>Enter your question in the text area and hit submit.</p>
+          <svg width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+            <rect
+              width="200"
+              height="400"
+              fill="#f0f0f0"
+              stroke="#000"
+              strokeWidth="2"
+            />
+            <rect
+              x="20"
+              y="100"
+              width="160"
+              height="200"
+              fill="#fff"
+              stroke="#000"
+            />
+            <text x="30" y="150" fontFamily="Arial" fontSize="14" fill="#000">
+              Enter your question here...
+            </text>
+          </svg>
         </div>
         <div className=" w-[500px] flex flex-col items-center gap-2">
           <svg
             aria-hidden="true"
-            class="e-font-icon-svg e-far-dot-circle"
+            className="e-font-icon-svg e-far-dot-circle"
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             width="24"

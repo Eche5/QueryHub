@@ -232,7 +232,7 @@ export default function Dashboard() {
                       </li>
                       <li>
                         <Link
-                          onClick={closeNavbar}
+                          onClick={() => handleLogOut()}
                           className={
                             pathname === "/About"
                               ? "font-semibold text-[#B0B1F3]"

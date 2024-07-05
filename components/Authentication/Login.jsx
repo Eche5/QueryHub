@@ -4,6 +4,7 @@ import axios from "./axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Spinner from "../Spinner";
+import Link from "next/link";
 function Login() {
   const [email, setEmail] = useState("");
   const [errMsg, SetErrMsg] = useState("");
@@ -29,28 +30,31 @@ function Login() {
           withCredentials: true,
         }
       );
+
       const result = response?.data;
       const { accessToken, user } = result;
 
       const id = user?.id;
-      navigate.push(`/Dashboard/${id}`, { scroll: false });
-      setAuth({
-        user,
-        accessToken,
-      });
+      if (response.status == 200) {
+        navigate.push(`/Dashboard/${id}`, { scroll: false });
+        setAuth({
+          user,
+          accessToken,
+        });
+      }
     } catch (err) {
       setLogining(false);
-      SetErrMsg(err.response.data.error);
+      SetErrMsg(err?.response?.data?.error);
     }
   };
 
   return (
     <section>
-      <section className="flex justify-center items-center w-full font-Montserrat">
-        <div className="flex flex-col items-center w-full max-w-md p-4 bg-white rounded shadow-md">
+      <section className="flex justify-center items-center w-full font-Montserrat   bg-[#FEFAFA] dark:bg-[#0D0D0D]">
+        <div className="flex flex-col items-center w-full max-w-md p-4 bg-[#FEFAFA] dark:bg-[#0D0D0D] rounded shadow-md">
           <h3 className="text-center text-[3.2rem] font-bold mb-6">Sign In</h3>
           <form
-            className="flex flex-col gap-4 w-full"
+            className="flex flex-col gap-4 w-full bg-[#FEFAFA]  dark:bg-[#0D0D0D]"
             onSubmit={onHandleSubmit}
           >
             <p
@@ -64,7 +68,7 @@ function Login() {
             </p>
             <div className="flex flex-col">
               <label htmlFor="email" className="mb-1">
-                Email
+                Email<span className="text-red-500">*</span>
               </label>
               <input
                 value={email}
@@ -92,9 +96,11 @@ function Login() {
               <button className="bg-gradient-to-r from-[#25CFC6] to-[#FF3131] flex flex-col items-center rounded-md w-40 text-center py-2 text-white cursor-pointer drop-shadow-lg hover:scale-105 transition ease-in-out duration-200">
                 {!logining ? "Sign In" : <Spinner />}
               </button>
-              <button className="text-blue-500 hover:underline">
-                Sign Up &rarr;
-              </button>
+              <Link href="/Auth">
+                <button className="text-blue-500 hover:underline">
+                  Sign Up &rarr;
+                </button>
+              </Link>
             </div>
           </form>
         </div>

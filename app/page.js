@@ -6,12 +6,12 @@ import Works from "@/components/Home/Works";
 
 export default function Home() {
   return (
-    <div className="" >
-     <NavBar/>
-     <MainPage/>
-     <Features/>
-     <Works/>
-     <Footer/>
+    <div>
+      <NavBar />
+      <MainPage />
+      <Features />
+      <Works />
+      <Footer />
     </div>
   );
 }

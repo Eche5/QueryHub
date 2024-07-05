@@ -1,5 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
+import moment from "moment";
+
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { BiSolidConversation } from "react-icons/bi";
@@ -23,6 +25,7 @@ function Question() {
         QUESTION_URL,
         JSON.stringify({ question })
       );
+
       setQuestion(""); // Clear the input field after submitting
     } catch (error) {
       console.log(error);
@@ -30,81 +33,62 @@ function Question() {
   };
 
   useEffect(() => {
-    const socket = new WebSocket(
-      `wss://queryhub.adaptable.app/v1/question/${id}`
-    );
-    // const socket = new WebSocket(
-    //   `ws://localhost:8080/v1/question/${id}`
-    // );
+    let socket;
+    const connect = () => {
+      socket = new WebSocket(`wss://queryhub.adaptable.app/v1/question/${id}`);
 
-    socket.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      if (Array.isArray(data)) {
-        setQuestions((prevQuestions) => {
-          // Ensure unique questions by filtering duplicates
-          const newQuestions = data.filter(
-            (newQuestion) => !prevQuestions.some((q) => q.id === newQuestion.id)
-          );
-          return [...prevQuestions, ...newQuestions];
-        });
-      } else if (data.question) {
-        // If data is a single question object, wrap it in an array
-        setQuestions((prevQuestions) => {
-          if (!prevQuestions.some((q) => q.id === data.id)) {
-            return [...prevQuestions, data];
-          }
-          return prevQuestions;
-        });
-      } else {
-        console.error("Unexpected data format:", data);
-      }
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (Array.isArray(data)) {
+          setQuestions((prevQuestions) => [
+            ...prevQuestions,
+            ...data.filter((q) => !prevQuestions.some((pq) => pq.id === q.id)),
+          ]);
+        } else if (data.question) {
+          setQuestions((prevQuestions) => [...prevQuestions, data]);
+        } else {
+          console.error("Unexpected data format:", data);
+        }
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket Error:", error);
+      };
+
+      socket.onclose = () => {
+        console.log("WebSocket connection closed, attempting to reconnect...");
+        setTimeout(connect, 1000); // Attempt to reconnect after 1 second
+      };
     };
 
-    socket.onerror = function (error) {
-      console.error("WebSocket Error:", error);
-    };
-
-    socket.onclose = function () {
-      console.log("WebSocket connection closed");
-    };
+    connect();
 
     return () => {
       socket.close();
     };
-  }, [id, seminar, setQuestions]);
+  }, [id, setQuestions]);
 
   function formatDateTime(dateTimeString) {
-    const date = new Date(dateTimeString);
+    const date = new Date(dateTimeString); // Your date
+    const formattedDate = moment(date).fromNow();
 
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const period = hours >= 12 ? "pm" : "am";
-    const formattedHours = hours % 12 || 12;
-
-    return `${month} ${day}, ${year} ${formattedHours}:${minutes}${period}`;
+    return formattedDate;
   }
 
   return (
-    <div>
-      <nav className="hidden xl:flex top-0 w-full bg-[white] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
-        <h3 className="text-center text-[26px] font-bold">
+    <div className=" xl:px-0 flex flex-col gap-8 pb-10">
+      <nav className="hidden xl:flex top-0 w-full bg-[white] px-4 shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
+        <h3 className="text-center xl:text-[36px] font-bold">
+          {seminar[0]?.name}
+        </h3>
+        <div className="font-bold flex items-center gap-2">
+          <p>Questions</p>
+          <BiSolidConversation />
+        </div>
+        <RxAvatar className="h-[40px] w-[40px]" />
+      </nav>
+      <nav className=" flex xl:hidden top-0 w-full bg-[#FEFAFA] dark:bg-[#0D0D0D] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
+        <h3 className="text-center   dark:text-white font-bold">
           {seminar[0]?.name}
         </h3>
         <div className="font-bold flex items-center gap-2">
@@ -118,7 +102,7 @@ function Question() {
         <h3 className=" text-[22px] font-bold">
           Welcome to the Questions page!
         </h3>
-        <p className="text-center text-lg mb-4  w-[768px]">
+        <p className="text-center text-lg mb-4  xl:w-[768px]">
           This is where you can ask any questions you have during the seminar.
           Our goal is to provide a platform where you can engage with the
           presenters and get the answers you need.
@@ -165,18 +149,24 @@ function Question() {
           </>
         )}
       </div>
-      <ul className=" flex flex-col items-center gap-8">
+      <ul className=" flex flex-col items-center gap-8 px-4">
         {questions?.map((question) => {
           return (
             <li
               key={question.id}
-              className=" cursor-pointer bg-slate-100 hover:bg-slate-500 shadow-md h-[74px] w-[916px] flex justify-between items-center rounded-[4px]  px-10   "
+              className=" cursor-pointer bg-slate-100 hover:bg-slate-500 dark:bg-slate-500 shadow-md h-[84px] xl:w-[916px] w-full flex justify-between items-center rounded-[4px]  xl:px-10 px-2   "
             >
-              <div className=" ">
-                <div className=" flex items-center gap-4">
-                  <h3>{question.question}</h3>
+              <div className=" flex items-center gap-3 ">
+                <RxAvatar className="h-[40px] w-[40px]" />
+                <div>
+                  <p className=" italic">Anonymous</p>
+                  <p>{formatDateTime(question?.created_at)}</p>
                 </div>
-                <p>{formatDateTime(question?.created_at)}</p>
+              </div>
+              <div>
+                <div className=" flex items-center gap-4">
+                  <h3 className=" font-bold">{question.question}</h3>
+                </div>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

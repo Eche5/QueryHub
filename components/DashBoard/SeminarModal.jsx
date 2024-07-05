@@ -25,7 +25,7 @@ const SeminarModal = ({ isOpen, onClose, children }) => {
     >
       <div
         onClick={handleClick}
-        className="absolute bg-white md:p-8 p-12 rounded-lg shadow-xl z-[999] max-w-screen-xl"
+        className="absolute bg-white dark:bg-[#0D0D0D] md:p-8 p-12 mx-1 rounded-lg shadow-xl z-[999] max-w-screen-xl"
         role="dialog"
         aria-modal="true"
       >

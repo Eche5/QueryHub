@@ -5,10 +5,14 @@ import bg from "@/public/98y_8dnmspj5e9imsor55ko32.jpg";
 
 export default function page({children}) {
   return (
-    <div>
+    <div className="bg-[#FEFAFA] dark:bg-[#0D0D0D]">
       <NavBar />
-      <div className=" flex items-center px-8">
-        <Image src={bg} alt="bg" className=" w-[1000px] h-[492px]" />
+      <div className=" flex items-center justify-center px-8 mt-20 xl:mt-0 bg-[#FEFAFA] dark:bg-[#0D0D0D]">
+        <Image
+          src={bg}
+          alt="bg"
+          className=" xl:w-[1000px] h-[492px] xl:block hidden"
+        />
         {children}
       </div>
     </div>

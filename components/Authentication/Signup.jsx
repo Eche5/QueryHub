@@ -5,10 +5,11 @@ import React, { useState } from "react";
 import axios from "./axios";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
+import Link from "next/link";
 
 function Signup() {
   const [fullname, setFullName] = useState("");
-    const [Signining, setSignining] = useState(false);
+  const [Signining, setSignining] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,20 +54,21 @@ function Signup() {
 
   return (
     <section>
-      <section className="flex justify-center items-center w-full font-Montserrat">
-        <div className="flex flex-col items-center w-full max-w-md p-4 bg-white rounded shadow-md">
+      <section className="flex justify-center items-center w-full font-Montserrat bg-[#FEFAFA] dark:bg-[#0D0D0D]">
+        <div className="flex flex-col items-center w-full max-w-md p-4  rounded shadow-md">
           <h3 className="text-center text-[3.2rem] font-bold mb-6">Sign Up</h3>
           <form
-            className="flex flex-col gap-4 w-full"
+            className="flex flex-col gap-4 w-full bg-[#FEFAFA] dark:bg-[#0D0D0D]"
             onSubmit={onHandleSubmit}
           >
             <div className="flex flex-col">
               <label htmlFor="fullname" className="mb-1">
-                Full Name
+                Full Name<span className="text-red-500"> *</span>
               </label>
               <input
                 value={fullname}
                 onChange={(e) => setFullName(e.target.value)}
+                required
                 placeholder="Full Name..."
                 id="fullname"
                 type="text"
@@ -75,7 +77,7 @@ function Signup() {
             </div>
             <div className="flex flex-col">
               <label htmlFor="email" className="mb-1">
-                Email
+                Email<span className="text-red-500"> *</span>
               </label>
               <input
                 value={email}
@@ -126,9 +128,11 @@ function Signup() {
               >
                 {!Signining ? "Sign Up" : <Spinner />}
               </button>
-              <button className="text-blue-500 hover:underline">
-                Sign In &rarr;
-              </button>
+              <Link href="/Auth/Login">
+                <button className="text-blue-500 hover:underline">
+                  Sign In &rarr;
+                </button>
+              </Link>
             </div>
           </form>
         </div>

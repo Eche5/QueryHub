@@ -5,7 +5,7 @@ import { RxAvatar } from "react-icons/rx";
 import SeminarModal from "./SeminarModal";
 import Seminar from "./Seminar";
 import axios, { axiosPrivate } from "../Authentication/axios";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import PersistLogin from "../PersistLogin";
@@ -15,6 +15,7 @@ import QRCode from "react-qr-code";
 export default function Dashboard() {
   const [qrIsVisible, setQrIsVisible] = useState(false);
   const [url, setUrl] = useState("");
+  const navigate = useRouter();
   const handleQrCodeGenerator = (url) => {
     setUrl(url);
     if (!url) {
@@ -78,6 +79,14 @@ export default function Dashboard() {
     fetchSeminars();
   }, []);
 
+  const handleLogOut = async () => {
+    const LOGOUT_URL = "logout";
+    const response = await axios.post(LOGOUT_URL);
+    if (response.status == 204) {
+      navigate.push("/");
+    }
+  };
+
   return (
     <PersistLogin>
       <nav className="hidden xl:flex top-0 w-full bg-[white] dark:bg-[#0D0D0D] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
@@ -116,7 +125,10 @@ export default function Dashboard() {
                 <li className=" border-b-2 hover:bg-slate-500 cursor-pointer">
                   Manage Profile
                 </li>
-                <li className="  hover:bg-slate-500 cursor-pointer text-red-600">
+                <li
+                  className="  hover:bg-slate-500 cursor-pointer text-red-600"
+                  onClick={() => handleLogOut()}
+                >
                   Log out
                 </li>
               </ul>

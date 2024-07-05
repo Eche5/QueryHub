@@ -28,7 +28,7 @@ function Works() {
           <Image
             src={qr_code}
             alt="qrcode"
-            className=" w-[400px] h-[400px] rounded-md"
+            className=" w-[400px] xl:h-[400px] rounded-md"
           />
         </div>
         <div className=" xl:w-[500px] flex flex-col items-center gap-2">
@@ -46,7 +46,7 @@ function Works() {
           <Image
             src={submit}
             alt="submit"
-            className=" w-[400px] h-[400px] rounded-md"
+            className=" w-[400px] xl:h-[400px] rounded-md"
           />
         </div>
         <div className=" xl:w-[500px] flex flex-col items-center gap-2">
@@ -64,7 +64,7 @@ function Works() {
           <Image
             src={answer}
             alt="answer"
-            className=" w-[400px] h-[400px] rounded-md"
+            className=" w-[400px] xl:h-[400px] rounded-md"
           />
         </div>
       </div>

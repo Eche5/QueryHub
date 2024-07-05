@@ -2,11 +2,13 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Spinner from "./Spinner";
+import { useRouter } from "next/navigation";
+
 function PersistLogin({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = useRefreshToken();
-
+  const router = useRouter();
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -20,8 +22,18 @@ function PersistLogin({ children }) {
       }
     };
 
-    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-  }, []);
+    if (!auth?.accessToken) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
+  }, [auth, refresh]);
+
+  useEffect(() => {
+    if (!isLoading && !auth?.accessToken) {
+      router.push("/");
+    }
+  }, [isLoading, auth, router]);
 
   return <>{isLoading ? <Spinner /> : children}</>;
 }

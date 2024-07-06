@@ -94,7 +94,6 @@ export default function Dashboard() {
     <PersistLogin>
       <nav className="hidden xl:flex top-0 w-full bg-[white] dark:bg-[#0D0D0D] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
         <h3 className="text-center text-[36px] font-bold">Dashboard</h3>
-        <button onClick={handleLogOut}>Logout</button>
         <div className="font-bold flex items-center gap-2 font-Montserrat">
           <input
             type="search"
@@ -220,12 +219,7 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={closeNavbar}
-                          className={
-                            pathname === "/"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/"
+                          className="font-semibold text-[#B0B1F3]"
                         >
                           Manage Profile
                         </Link>
@@ -233,12 +227,7 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={() => handleLogOut()}
-                          className={
-                            pathname === "/About"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/About"
+                          className="font-semibold text-[#B0B1F3]"
                         >
                           Log out
                         </Link>

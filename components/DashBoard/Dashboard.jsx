@@ -120,7 +120,7 @@ export default function Dashboard() {
           <div className=" flex items-center gap-4">
             <RxAvatar className="h-[40px] w-[40px]" />
             <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-              {auth?.user?.full_name}{" "}
+              {auth?.user?.full_name.split(" ")[0]}
               <ChevronDownIcon
                 aria-hidden="true"
                 className="-mr-1 h-5 w-5 text-gray-400"
@@ -220,12 +220,7 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={closeNavbar}
-                          className={
-                            pathname === "/"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/"
+                          className="font-semibold text-[#B0B1F3]"
                         >
                           Manage Profile
                         </Link>
@@ -233,12 +228,7 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={() => handleLogOut()}
-                          className={
-                            pathname === "/About"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/About"
+                          className="font-semibold text-[#B0B1F3]"
                         >
                           Log out
                         </Link>

@@ -220,12 +220,8 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={closeNavbar}
-                          className={
-                            pathname === "/"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/"
+                          className="font-semibold text-[#B0B1F3]"
+                        
                         >
                           Manage Profile
                         </Link>
@@ -233,12 +229,8 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={() => handleLogOut()}
-                          className={
-                            pathname === "/About"
-                              ? "font-semibold text-[#B0B1F3]"
-                              : ""
-                          }
-                          href="/About"
+                          className="font-semibold text-[#B0B1F3]"
+        
                         >
                           Log out
                         </Link>

@@ -2,9 +2,6 @@
 import React from "react";
 
 function Features() {
-  const name = "Echefula Ndukwe";
-  const first = name.split(" ")[0]; // Splitting the string by space and taking the first part
-  console.log(first); //
   return (
     <section className=" font-Montserrat flex flex-col items-center pt-20 gap-20 ">
       <h2 className=" xl:text-[2.3rem] text-[1.4rem] font-semibold">

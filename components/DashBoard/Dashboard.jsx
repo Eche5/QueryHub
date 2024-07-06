@@ -94,6 +94,7 @@ export default function Dashboard() {
     <PersistLogin>
       <nav className="hidden xl:flex top-0 w-full bg-[white] dark:bg-[#0D0D0D] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
         <h3 className="text-center text-[36px] font-bold">Dashboard</h3>
+        <button onClick={handleLogOut}>Logout</button>
         <div className="font-bold flex items-center gap-2 font-Montserrat">
           <input
             type="search"
@@ -160,7 +161,7 @@ export default function Dashboard() {
               <form action="#" method="POST">
                 <MenuItem>
                   <button
-                    onClick={() => handleLogOut()}
+                    onClick={handleLogOut}
                     className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                   >
                     Sign out

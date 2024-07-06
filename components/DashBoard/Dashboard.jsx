@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BiSolidConversation } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -220,7 +219,12 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={closeNavbar}
-                          className="font-semibold text-[#B0B1F3]"
+                          className={
+                            pathname === "/"
+                              ? "font-semibold text-[#B0B1F3]"
+                              : ""
+                          }
+                          href="/"
                         >
                           Manage Profile
                         </Link>
@@ -228,7 +232,12 @@ export default function Dashboard() {
                       <li>
                         <Link
                           onClick={() => handleLogOut()}
-                          className="font-semibold text-[#B0B1F3]"
+                          className={
+                            pathname === "/About"
+                              ? "font-semibold text-[#B0B1F3]"
+                              : ""
+                          }
+                          href="/About"
                         >
                           Log out
                         </Link>

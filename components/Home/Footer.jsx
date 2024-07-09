@@ -7,7 +7,7 @@ import { CiMail } from "react-icons/ci";
 
 function Footer() {
   return (
-    <footer className=" font-Montserrat xl:flex justify-between py-20 px-10 bg-[#D2D2D2] dark:bg-[#0D0D0D]">
+    <footer className=" font-Montserrat xl:flex justify-between dark:text-white text-black py-20 px-10 bg-[#D2D2D2] dark:bg-[#0D0D0D]">
       <h2 className="text-[2rem] font-bold text-black dark:text-white">
         <span className=" text-[#FF3131]">Query</span>Hub
       </h2>

@@ -3,7 +3,7 @@ import React from "react";
 
 function Features() {
   return (
-    <section className=" font-Montserrat flex flex-col items-center pt-20 gap-20 ">
+    <section className=" font-Montserrat flex bg-white dark:bg-[#0D0D0D] dark:text-white text-black flex-col items-center pt-20 gap-20 ">
       <h2 className=" xl:text-[2.3rem] text-[1.4rem] font-semibold">
         Why Use QueryHub?
       </h2>

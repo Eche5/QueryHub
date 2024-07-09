@@ -1,8 +1,9 @@
 import useRefreshToken from "../hooks/useRefreshToken";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import Spinner from "./Spinner";
+import Spinner from "./Loader";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 function PersistLogin({ children }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +36,7 @@ function PersistLogin({ children }) {
     }
   }, [isLoading, auth, router]);
 
-  return <>{isLoading ? <Spinner /> : children}</>;
+  return <>{isLoading ? <Loader /> : children}</>;
 }
 
 export default PersistLogin;

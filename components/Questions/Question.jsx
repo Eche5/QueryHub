@@ -7,10 +7,12 @@ import React, { useEffect, useState } from "react";
 import { BiSolidConversation } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 import axios from "../Authentication/axios";
+import { ThemeProvider } from "next-themes";
+import ThemeSwitch from "../ThemeSwitcher";
 
 function Question() {
   const [isFocused, setIsFocused] = useState(false);
-
+  const [sending, setIsSending] = useState(false);
   const { seminar } = useAuth();
   const [question, setQuestion] = useState("");
   const { questions, setQuestions } = useAuth();
@@ -20,14 +22,20 @@ function Question() {
 
   const onHandleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true);
     try {
       const response = await axios.post(
         QUESTION_URL,
         JSON.stringify({ question })
       );
-
-      setQuestion(""); // Clear the input field after submitting
+      if (response.status == 201) {
+        setIsFocused(false);
+        setQuestion("");
+        setIsSending(false);
+      }
     } catch (error) {
+      setIsSending(false);
+
       console.log(error);
     }
   };
@@ -42,9 +50,13 @@ function Question() {
         if (Array.isArray(data)) {
           setQuestions((prevQuestions) => [
             ...prevQuestions,
-            ...data.filter((q) => !prevQuestions.some((pq) => pq.id === q.id)),
+            ...data.filter(
+              (q) =>
+                q.seminar_id === id &&
+                !prevQuestions.some((pq) => pq.id === q.id)
+            ),
           ]);
-        } else if (data.question) {
+        } else if (data.question && data.seminar_id === id) {
           setQuestions((prevQuestions) => [...prevQuestions, data]);
         } else {
           console.error("Unexpected data format:", data);
@@ -76,16 +88,19 @@ function Question() {
   }
 
   return (
-    <div className=" xl:px-0 flex flex-col gap-8 pb-10">
-      <nav className="hidden xl:flex top-0 w-full bg-[white] px-4 shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
+    <div className=" xl:px-0 flex flex-col gap-8 pb-10 bg-white dark:bg-[#0D0D0D] h-screen dark:text-white text-black">
+      <nav className="hidden xl:flex top-0 w-full bg-white dark:bg-[#0D0D0D] dark:text-white text-black px-4 shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
         <h3 className="text-center xl:text-[36px] font-bold">
           {seminar[0]?.name}
         </h3>
         <div className="font-bold flex items-center gap-2">
-          <p>Questions</p>
+          <p className=" dark:text-white text-black">Questions</p>
           <BiSolidConversation />
         </div>
-        <RxAvatar className="h-[40px] w-[40px]" />
+        <div className=" flex items-center gap-2">
+          <RxAvatar className="h-[40px] w-[40px]" />
+          <ThemeSwitch />
+        </div>
       </nav>
       <nav className=" flex xl:hidden top-0 w-full bg-[#FEFAFA] dark:bg-[#0D0D0D] shadow-md fixed z-[9999] justify-between mac:flex items-center h-[100px] pr-8 ml-0 font-Montserrat">
         <h3 className="text-center   dark:text-white font-bold">
@@ -95,10 +110,13 @@ function Question() {
           <p>Questions</p>
           <BiSolidConversation />
         </div>
-        <RxAvatar className="h-[40px] w-[40px]" />
+        <div className=" flex items-center gap-2">
+          <RxAvatar className="h-[40px] w-[40px]" />
+          <ThemeSwitch />
+        </div>{" "}
       </nav>
 
-      <div className="pt-40 flex flex-col items-center gap-8">
+      <div className="pt-40 flex flex-col items-center px-2 gap-8 bg-white dark:bg-[#0D0D0D]">
         <h3 className=" text-[22px] font-bold">
           Welcome to the Questions page!
         </h3>
@@ -112,13 +130,14 @@ function Question() {
           className={
             !isFocused
               ? "xl:w-[570px] w-full h-[82px]  px-2 border-[4px] border-[#F0F0F0] rounded-[15px] relative input-placeholder"
-              : "xl:w-[570px] w-full h-[182px]  px-2 border-[4px] border-[#F0F0F0] rounded-[15px] relative input-placeholder"
+              : "xl:w-[570px] w-full h-[182px]  p-2 border-[4px] border-[#F0F0F0] rounded-[15px] relative input-placeholder"
           }
         >
-          <div className=" flex items-center">
+          <div className=" flex items-center gap-2">
             <RxAvatar className="h-[40px] w-[40px]" />
             <input
               value={question}
+              required
               onChange={(e) => setQuestion(e.target.value)}
               className="h-[74px] w-full outline-none focus:ring-0 focus:border-black xl:w-[496px] border-0 rounded-[15px] pl-[21px] styled-input"
               placeholder="Type your Question"
@@ -149,40 +168,30 @@ function Question() {
           </>
         )}
       </div>
-      <ul className=" flex flex-col items-center gap-8 px-4">
+      <ul className=" flex flex-col items-center gap-2 px-4 bg-white dark:bg-[#0D0D0D] ">
         {questions?.map((question) => {
           return (
-            <li
+            <div
+              className="chat chat-start  xl:w-[916px] w-full "
               key={question.id}
-              className=" cursor-pointer bg-slate-100 hover:bg-slate-500 dark:bg-slate-500 shadow-md h-[84px] xl:w-[916px] w-full flex justify-between items-center rounded-[4px]  xl:px-10 px-2   "
             >
-              <div className=" flex items-center gap-3 ">
-                <RxAvatar className="h-[40px] w-[40px]" />
-                <div>
-                  <p className=" italic">Anonymous</p>
-                  <p>{formatDateTime(question?.created_at)}</p>
+              <div className="chat chat-start h-[84px] xl:w-[916px] w-full">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <RxAvatar className=" w-[40px] h-[40px]" />
+                  </div>
+                </div>
+                <div className=" flex justify-between items-center  w-[70vw] xl:w-[824px]">
+                  <p className=" ">Anonymous</p>
+                  <time className="text-md opacity-50">
+                    {formatDateTime(question?.created_at)}
+                  </time>
+                </div>
+                <div className="chat-bubble  xl:w-[916px]  w-[80vw] xl:h-[30px]">
+                  {question.question}
                 </div>
               </div>
-              <div>
-                <div className=" flex items-center gap-4">
-                  <h3 className=" font-bold">{question.question}</h3>
-                </div>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                />
-              </svg>
-            </li>
+            </div>
           );
         })}
       </ul>

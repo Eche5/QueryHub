@@ -3,8 +3,8 @@ import React, { useRef, useState } from "react";
 import axios from "./axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import Spinner from "../Spinner";
 import Link from "next/link";
+import Spinner from "../Spinner";
 function Login() {
   const [email, setEmail] = useState("");
   const [errMsg, SetErrMsg] = useState("");
@@ -14,6 +14,8 @@ function Login() {
 
   const [logining, setLogining] = useState(false);
   const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+
   const LOGIN_URL = "/login";
   const navigate = useRouter();
   const onHandleSubmit = async (e) => {
@@ -49,8 +51,8 @@ function Login() {
   };
 
   return (
-    <section>
-      <section className="flex justify-center items-center w-full font-Montserrat   bg-[#FEFAFA] dark:bg-[#0D0D0D]">
+    <section className=" bg-white dark:bg-[#0D0D0D]">
+      <section className="flex justify-center dark:text-white text-black items-center w-full font-Montserrat   bg-[#FEFAFA] dark:bg-[#0D0D0D]">
         <div className="flex flex-col items-center w-full max-w-md p-4 bg-[#FEFAFA] dark:bg-[#0D0D0D] rounded shadow-md">
           <h3 className="text-center text-[3.2rem] font-bold mb-6">Sign In</h3>
           <form
@@ -79,7 +81,7 @@ function Login() {
                 className="outline-none border-b-2 p-2"
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col relative">
               <label htmlFor="password" className="mb-1">
                 Password
               </label>
@@ -88,9 +90,16 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="***********"
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className="outline-none border-b-2 p-2"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 bottom-2"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
             <div className="flex gap-2 items-center mt-6">
               <button className="bg-gradient-to-r from-[#25CFC6] to-[#FF3131] flex flex-col items-center rounded-md w-40 text-center py-2 text-white cursor-pointer drop-shadow-lg hover:scale-105 transition ease-in-out duration-200">

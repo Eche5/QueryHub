@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -13,8 +13,8 @@
     @apply -rotate-45 -translate-y-1;
   }
 }
-*{
-  @apply transition-colors duration-200
+* {
+  @apply transition-colors duration-200;
 }
 
 .qrcode__container {
@@ -42,7 +42,6 @@
   margin-top: 20px;
 }
 
-
 .qrcode__input input {
   width: 100%;
   padding: 10px;
@@ -54,7 +53,7 @@
   margin-bottom: 15px;
 }
 
-.qrcode__input button, 
+.qrcode__input button,
 .qrcode__download button {
   display: inline-block;
   padding: 7px;
@@ -77,4 +76,8 @@
 
 .qrcode__download button {
   margin-top: 10px;
+}
+
+body {
+  background-color: #fff;
 }

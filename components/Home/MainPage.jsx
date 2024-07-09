@@ -44,10 +44,10 @@ function MainPage() {
   }, []);
   return (
     <div className=" flex flex-col items-center gap-10 py-20 mt-20 xl:mt-0 font-Montserrat bg-[#FEFAFA] dark:bg-black  ">
-      <h1 className=" xl:text-[4rem] text-[2rem] font-bold text-black dark:text-white">
+      <h1 className=" xl:text-[4rem] text-[1.8rem] font-bold text-black dark:text-white">
         Welcome to <span className=" text-[#FF3131]">Query</span>Hub
       </h1>
-      <p className=" xl:text-[22px] dark:text-white text-center">
+      <p className=" xl:text-[22px] dark:text-white text-black text-center">
         The easiest way to ask questions anonymously at seminars.
       </p>
       <Link href="/Auth">
@@ -62,12 +62,12 @@ function MainPage() {
             value={apiKey}
             required
             onChange={(e) => setApiKey(e.target.value)}
-            className="h-[74px] w-full outline-none focus:ring-0 focus:border-black xl:w-[496px] dark:bg-black rounded-[15px] pl-[21px] styled-input"
+            className="h-[74px] w-full outline-none focus:ring-0 focus:border-black xl:w-[496px] dark:text-white text-black dark:bg-black rounded-[15px] pl-[21px] styled-input"
             type="text"
           />
           <div className="placeholder absolute top-1/2 left-[27px] transform -translate-y-1/2 pointer-events-none text-gray-400">
-            <span className="dark:text-white text-black">Enter Seminar</span>{" "}
-            Key |
+            <span className="dark:text-white text-black">Joining As Participant?</span>{" "}
+            |Enter Seminar Key 
           </div>
           {!loading ? (
             <button

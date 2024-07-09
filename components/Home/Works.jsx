@@ -5,7 +5,7 @@ import answer from "@/public/DALL·E 2024-07-05 13.00.48 - An illustration showi
 import submit from "@/public/DALL·E 2024-07-05 12.58.11 - An illustration of a smartphone screen showing a text area where users can enter their questions. The background of the smartphone is white with a sim.webp";
 function Works() {
   return (
-    <section className=" font-Montserrat flex flex-col items-center gap-20 px-10 pb-20">
+    <section className=" font-Montserrat flex flex-col bg-white dark:bg-[#0D0D0D] dark:text-white text-black items-center gap-20 px-10 pb-20">
       <h2 className=" xl:text-[2.3rem] text-[1.4rem] font-semibold">
         How It Works
       </h2>

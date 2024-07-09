@@ -20,7 +20,7 @@ function NavBar() {
   };
   return (
     <header>
-      <nav className=" xl:flex items-center hidden justify-around font-Montserrat h-[128px]">
+      <nav className=" xl:flex items-center hidden justify-around bg-white dark:bg-[#0D0D0D] dark:text-white text-black  font-Montserrat h-[128px]">
         <h2 className="text-[2.8rem] font-bold text-black dark:text-white">
           <span className=" text-[#FF3131]">Query</span>Hub
         </h2>{" "}

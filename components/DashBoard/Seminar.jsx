@@ -3,13 +3,16 @@
 import React, { useState } from "react";
 import axios, { axiosPrivate } from "../Authentication/axios";
 import { useParams } from "next/navigation";
+import Spinner from "../Spinner";
 
 export default function Seminar({ onClose, fetchSeminars }) {
   const [name, setName] = useState("");
+  const [creating, setCreating] = useState(false);
   const SEMINAR_URL = "/seminar";
   const { id } = useParams();
   const onHandleSubmit = async (e) => {
     e.preventDefault();
+    setCreating(true);
     try {
       const response = await axiosPrivate.post(
         SEMINAR_URL,
@@ -20,8 +23,10 @@ export default function Seminar({ onClose, fetchSeminars }) {
         fetchSeminars();
         onClose();
         setName("");
+        setCreating(false);
       }
     } catch (error) {
+      setCreating(false);
       console.log(error);
     }
   };
@@ -43,14 +48,21 @@ export default function Seminar({ onClose, fetchSeminars }) {
       </div>
       <p className="italic">Seminar event will expire after two days</p>
       <div className="flex items-center gap-4 px-4 text-white">
-        <button className="text-red-600 h-[40px] rounded-md" onClick={onClose}>
+        <button
+          className="bg-[#FF3131] flex flex-col items-center rounded-md w-40 text-center py-2 text-white cursor-pointer drop-shadow-lg hover:scale-105 transition ease-in-out duration-200"
+          onClick={onClose}
+        >
           Cancel
         </button>
         <button
           type="submit"
-          className="bg-green-600 w-[136px] h-[40px] rounded-md"
+          className={
+            !creating
+              ? "bg-[#25CFC6] flex flex-col items-center rounded-md w-40 text-center py-2 text-black cursor-pointer drop-shadow-lg hover:scale-105 transition ease-in-out duration-200"
+              : "flex flex-col items-center w-[136px]"
+          }
         >
-          Create Seminar
+          {!creating ? "Create Seminar" : <Spinner />}
         </button>
       </div>
     </form>

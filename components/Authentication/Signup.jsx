@@ -1,7 +1,7 @@
 "use client";
 
 import Layout from "@/app/Auth/page";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "./axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -12,6 +12,8 @@ function Signup() {
   const [Signining, setSignining] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [validPwd, setValidPwd] = useState(false);
+  const [errMsg, SetErrMsg] = useState("");
+  const errRef = useRef();
 
   const [validMatch, setValidMatch] = useState(false);
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -36,12 +38,11 @@ function Signup() {
       setValidData(false);
     }
   }, [validMatch, validPwd, email]);
-  console.log(validMatch, validPwd, email);
   const LOGIN_URL = "/users";
 
   const onHandleSubmit = async (e) => {
     e.preventDefault();
-
+    setSignining(true);
     try {
       const response = await axios.post(
         LOGIN_URL,
@@ -62,13 +63,19 @@ function Signup() {
 
       const id = user?.id;
       navigate.push(`/Auth/Login`, { scroll: false });
-      setAuth({
-        user,
-
-        accessToken,
-      });
     } catch (err) {
-      console.log(err);
+      if (
+        err?.response?.data?.error ==
+        'cannot create user:pq: duplicate key value violates unique constraint "users_email_key"'
+      ) {
+        SetErrMsg("email already exist");
+      } else if (
+        err?.response?.data?.error !=
+        'cannot create user:pq: duplicate key value violates unique constraint "users_email_key"'
+      ) {
+        SetErrMsg("Something went wrong");
+      }
+      setSignining(false);
     }
   };
 
@@ -81,6 +88,15 @@ function Signup() {
             className="flex flex-col gap-4 w-full bg-[#FEFAFA] dark:bg-[#0D0D0D]"
             onSubmit={onHandleSubmit}
           >
+            <p
+              ref={errRef}
+              className={
+                errMsg ? "errmsg text-red-500 text-center" : "offscreen"
+              }
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>
             <div className="flex flex-col">
               <label htmlFor="fullname" className="mb-1">
                 Full Name<span className="text-red-500"> *</span>
@@ -148,7 +164,6 @@ function Signup() {
                   : ""}
               </p>
             </div>
-
             <div className="flex items-center gap-2 mt-4">
               <input type="checkbox" id="terms" />
               <label htmlFor="terms" className="text-sm">

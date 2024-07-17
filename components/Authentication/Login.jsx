@@ -14,7 +14,7 @@ function Login() {
 
   const [logining, setLogining] = useState(false);
   const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const LOGIN_URL = "/login";
   const navigate = useRouter();
@@ -46,7 +46,13 @@ function Login() {
       }
     } catch (err) {
       setLogining(false);
-      SetErrMsg(err?.response?.data?.error);
+      if (err?.response?.status == 401) {
+        SetErrMsg(err?.response?.data?.error);
+      } else if (err?.response?.status == 404) {
+        SetErrMsg(err?.response?.data?.error);
+      } else {
+        SetErrMsg("Something went wrong");
+      }
     }
   };
 

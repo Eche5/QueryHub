@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { RxAvatar } from "react-icons/rx";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-
+import { format, parseISO } from "date-fns";
 import SeminarModal from "./SeminarModal";
 import Seminar from "./Seminar";
 import axios, { axiosPrivate } from "../Authentication/axios";
@@ -31,6 +31,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showdropDown, setShowDropDown] = useState(false);
   const [seminarName, setSeminarName] = useState("");
+  const [search, setSearch] = useState(false);
 
   const deleteHandler = async (url) => {
     const DELETE_URL = `/seminar/${url}`;
@@ -50,6 +51,7 @@ export default function Dashboard() {
   const { auth } = useAuth();
   const [seminars, setSeminars] = useState([]);
   const pathname = usePathname();
+  const [editing, setEditing] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -97,19 +99,21 @@ export default function Dashboard() {
 
   const editSeminar = async (name) => {
     const EDITSEMINAR_NAME = `seminar/${seminarId}`;
+    setEditing(true);
     try {
       const response = await axiosPrivate.put(
         EDITSEMINAR_NAME,
 
         JSON.stringify({ name })
       );
-      if (response.status == 201) {
+      if (response.status == 200) {
+        setEditing(false);
         fetchSeminars();
         handleCloseModal();
-        setName("");
       }
     } catch (error) {
       console.log(error);
+      setEditing(false);
     }
   };
   const SEARCHBY_NAME = `seminar/${id}/${seminarName}`;
@@ -117,7 +121,10 @@ export default function Dashboard() {
     const response = await axios(SEARCHBY_NAME);
     setSeminars(response.data);
   };
-
+  function formatDateTime(timestamp) {
+    const date = parseISO(timestamp);
+    return format(date, "dd MMM yyyy");
+  }
   return (
     <PersistLogin>
       <section className=" bg-white dark:bg-[#0D0D0D] h-screen dark:text-white text-black">
@@ -207,15 +214,79 @@ export default function Dashboard() {
           <div className="relative bg-[#FFFFFF] dark:bg-[#0D0D0D] shadow-md">
             <div className="px-6 md:px-12 container mx-auto py-4">
               <div className="flex items-center justify-between">
-                <div className="flex justify-center bg-transparent pt-2 z-[1000]">
-                  <a href="/">
-                    <div className="flex items-center">
-                      <h2 className="text-[2rem] font-bold text-black dark:text-white">
-                        Dashboard
-                      </h2>
-                    </div>
-                  </a>
+                <div className="font-bold flex items-center gap-2 font-Montserrat bg-white dark:bg-[#0D0D0D]">
+                  {search && (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6"
+                        onClick={() => setSearch(false)}
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                        />
+                      </svg>
+
+                      <input
+                        type="search"
+                        className="  rounded-[14px] w-[250px] border-2 outline-none border-black pl-2 h-[40px]"
+                        placeholder="Search Seminar"
+                        value={seminarName}
+                        onChange={(e) => setSeminarName(e.target.value)}
+                      />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="size-6 cursor-pointer"
+                        onClick={() => searchSeminarByName()}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                        />
+                      </svg>
+                    </>
+                  )}
+                  {!search && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6 cursor-pointer"
+                      onClick={() => setSearch(true)}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                  )}
                 </div>
+                {!search && (
+                  <div className="flex justify-center bg-transparent pt-2 z-[1000]">
+                    <a href="/">
+                      <div className="flex items-center">
+                        <h2 className="text-[2rem] font-bold text-black dark:text-white">
+                          Dashboard
+                        </h2>
+                      </div>
+                    </a>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-end">
                   <input
                     type="checkbox"
@@ -321,7 +392,10 @@ export default function Dashboard() {
                         <p>{seminar.api_key}</p>
                       </div>
                     </div>
-                    <p>June 20 - june 22</p>
+                    <p>
+                      {formatDateTime(seminar?.created_at)} -
+                      {formatDateTime(seminar?.expiry_date)}
+                    </p>
                   </div>
                 </Link>
 
@@ -382,7 +456,7 @@ export default function Dashboard() {
                 </div>
               </div>
             );
-          })}{" "}
+          })}
           {seminars?.length === 0 && (
             <>
               <h4>You currently have no active Seminar!!!</h4>
@@ -406,6 +480,7 @@ export default function Dashboard() {
                     onEdit={editSeminar}
                     onClose={handleCloseModal}
                     fetchSeminars={fetchSeminars}
+                    editing={editing}
                   />
                 )}
               </>

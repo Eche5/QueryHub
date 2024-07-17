@@ -23,7 +23,7 @@ function NavBar() {
       <nav className=" xl:flex items-center hidden justify-around bg-white dark:bg-[#0D0D0D] dark:text-white text-black  font-Montserrat h-[128px]">
         <h2 className="text-[2.8rem] font-bold text-black dark:text-white">
           <span className=" text-[#FF3131]">Query</span>Hub
-        </h2>{" "}
+        </h2>
         <ul className=" flex items-center justify-around gap-8">
           <Link
             href="/"
@@ -125,25 +125,20 @@ function NavBar() {
                         </Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#">Ask A Question</Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#">About Us</Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="#">Contact Us</Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="/Auth/Login">
                           <button>Login</button>
                         </Link>
                       </li>
                       <li>
-                        {" "}
                         <Link href="/Auth">
                           <button className=" bg-gradient-to-r from-[#25CFC6] to-[#FF3131] rounded-md w-40 text-center py-2 text-white cursor-pointer drop-shadow-lg hover:scale-105 transition ease-in-out duration-200">
                             Sign Up

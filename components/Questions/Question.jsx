@@ -113,7 +113,7 @@ function Question() {
         <div className=" flex items-center gap-2">
           <RxAvatar className="h-[40px] w-[40px]" />
           <ThemeSwitch />
-        </div>{" "}
+        </div>
       </nav>
 
       <div className="pt-40 flex flex-col items-center px-2 gap-8 bg-white dark:bg-[#0D0D0D]">

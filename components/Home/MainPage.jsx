@@ -42,6 +42,7 @@ function MainPage() {
       }
     });
   }, []);
+
   return (
     <div className=" flex flex-col items-center gap-10 py-20 mt-20 xl:mt-0 font-Montserrat bg-[#FEFAFA] dark:bg-black  ">
       <h1 className=" xl:text-[4rem] text-[1.8rem] font-bold text-black dark:text-white">
@@ -66,8 +67,10 @@ function MainPage() {
             type="text"
           />
           <div className="placeholder absolute top-1/2 left-[27px] transform -translate-y-1/2 pointer-events-none text-gray-400">
-            <span className="dark:text-white text-black">Joining As Participant?</span>{" "}
-            |Enter Seminar Key 
+            <span className="dark:text-white text-black">
+              Joining As Participant?
+            </span>
+            |Enter Seminar Key
           </div>
           {!loading ? (
             <button
